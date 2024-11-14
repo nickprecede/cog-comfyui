@@ -1,3 +1,6 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
 import os
 import shutil
 import tarfile
@@ -11,6 +14,8 @@ from weights_downloader import WeightsDownloader
 from cog_model_helpers import optimise_images
 from config import config
 
+# FastAPI app
+app = FastAPI()
 
 os.environ["DOWNLOAD_LATEST_WEIGHTS_MANIFEST"] = "true"
 mimetypes.add_type("image/webp", ".webp")
@@ -21,6 +26,16 @@ ALL_DIRECTORIES = [OUTPUT_DIR, INPUT_DIR, COMFYUI_TEMP_OUTPUT_DIR]
 
 with open("examples/api_workflows/sd15_txt2img.json", "r") as file:
     EXAMPLE_WORKFLOW_JSON = file.read()
+
+
+class ImageRequest(BaseModel):
+    workflow_json: str
+    input_file: str  # Image URL or base64 string
+    return_temp_files: bool = False
+    output_format: str = optimise_images.predict_output_format()
+    output_quality: int = optimise_images.predict_output_quality()
+    randomise_seeds: bool = True
+    force_reset_cache: bool = False
 
 
 class Predictor(BasePredictor):
@@ -143,3 +158,29 @@ class Predictor(BasePredictor):
         return optimise_images.optimise_image_files(
             output_format, output_quality, self.comfyUI.get_files(output_directories)
         )
+
+
+@app.post("/predict")
+async def predict(request: ImageRequest):
+    """API endpoint for prediction."""
+    try:
+        # Handle input file
+        input_file_path = "path/to/temp/file"  # You would need to handle the input properly (e.g., base64 decode)
+        
+        predictor = Predictor()
+        predictor.setup(weights="path/to/weights")
+
+        output_files = predictor.predict(
+            workflow_json=request.workflow_json,
+            input_file=Path(input_file_path),
+            return_temp_files=request.return_temp_files,
+            output_format=request.output_format,
+            output_quality=request.output_quality,
+            randomise_seeds=request.randomise_seeds,
+            force_reset_cache=request.force_reset_cache
+        )
+
+        return {"outputs": [str(f) for f in output_files]}
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

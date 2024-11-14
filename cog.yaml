@@ -5,6 +5,8 @@ build:
     - ffmpeg
   python_version: "3.10.6"
   python_packages:
+    - fastapi
+    - uvicorn
     - torch
     - torchvision
     - torchaudio
