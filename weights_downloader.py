@@ -71,19 +71,19 @@ class WeightsDownloader:
 
         print(f"⏳ Downloading {weight_str} to {dest}")
         start = time.time()
-        # subprocess.check_call(
-        #     ["pget", "--log-level", "warn", "-xf", url, dest], close_fds=False
-        # )
+        subprocess.check_call(
+            ["pget", "--log-level", "warn", "-xf", url, dest], close_fds=False
+        )
         # curl_command = f"curl -L -o {os.path.join(dest, os.path.basename(weight_str))} {url}"
         # print(curl_command)
-        try:
-            subprocess.check_call(
-                ['curl', '-L', '-o', os.path.join(dest, os.path.basename(weight_str)), url],
-                close_fds=False
-            )
-        except Exception as e:
-            print(e)
-            
+        # try:
+        #     subprocess.check_call(
+        #         ['curl', '-L', '-o', os.path.join(dest, os.path.basename(weight_str)), url],
+        #         close_fds=False
+        #     )
+        # except Exception as e:
+        #     print(e)
+
         elapsed_time = time.time() - start
         try:
             file_size_bytes = os.path.getsize(
