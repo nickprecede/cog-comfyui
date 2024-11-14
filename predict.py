@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 
 import os
+import json
+import base64
 import shutil
 import tarfile
 import zipfile
@@ -158,27 +160,59 @@ class Predictor(BasePredictor):
         return optimise_images.optimise_image_files(
             output_format, output_quality, self.comfyUI.get_files(output_directories)
         )
+    
 
+# Initialize Predictor once globally
+predictor = Predictor()
+predictor.setup()
 
 @app.post("/predict")
 async def predict(request: ImageRequest):
     """API endpoint for prediction."""
     try:
-        
-        predictor = Predictor()
-        predictor.setup()
-
         output_files = predictor.predict(
             workflow_json=request.workflow_json,
             input_file=request.input_file,
+            input_file=None,
             return_temp_files=request.return_temp_files,
             output_format=request.output_format,
             output_quality=request.output_quality,
             randomise_seeds=request.randomise_seeds,
             force_reset_cache=request.force_reset_cache
         )
-
         return {"outputs": [str(f) for f in output_files]}
 
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
+@app.post("/pubsub/predict")
+async def pubsub_predict(request: Request):
+    """Pub/Sub endpoint for asynchronous predictions."""
+    try:
+        # Decode Pub/Sub message
+        envelope = await request.json()
+        pubsub_message = envelope.get("message", {})
+        if "data" not in pubsub_message:
+            return {"error": "No data in Pub/Sub message"}, 400
+
+        # Decode and parse JSON data from Pub/Sub message
+        data = json.loads(base64.b64decode(pubsub_message["data"]).decode("utf-8"))
+
+        # Extract parameters for prediction
+        image_request = ImageRequest(**data)
+
+        # Run the prediction
+        output_files = predictor.predict(
+            workflow_json=image_request.workflow_json,
+            input_file=image_request.input_file,
+            return_temp_files=image_request.return_temp_files,
+            output_format=image_request.output_format,
+            output_quality=image_request.output_quality,
+            randomise_seeds=image_request.randomise_seeds,
+            force_reset_cache=image_request.force_reset_cache
+        )
+
+        return {"outputs": [str(f) for f in output_files]}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
