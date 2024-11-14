@@ -160,15 +160,13 @@ class Predictor(BasePredictor):
         return optimise_images.optimise_image_files(
             output_format, output_quality, self.comfyUI.get_files(output_directories)
         )
-    
 
-# Initialize Predictor once globally
-predictor = Predictor()
-predictor.setup(weights=None)
 
 @app.post("/predict")
 async def predict(request: ImageRequest):
     """API endpoint for prediction."""
+    predictor = Predictor()
+    predictor.setup(weights=None)
     try:
         output_files = predictor.predict(
             workflow_json=request.workflow_json,
@@ -188,6 +186,8 @@ async def predict(request: ImageRequest):
 @app.post("/pubsub/predict")
 async def pubsub_predict(request: Request):
     """Pub/Sub endpoint for asynchronous predictions."""
+    predictor = Predictor()
+    predictor.setup(weights=None)
     try:
         # Decode Pub/Sub message
         envelope = await request.json()
