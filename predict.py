@@ -173,7 +173,6 @@ async def predict(request: ImageRequest):
         output_files = predictor.predict(
             workflow_json=request.workflow_json,
             input_file=request.input_file,
-            input_file=None,
             return_temp_files=request.return_temp_files,
             output_format=request.output_format,
             output_quality=request.output_quality,
