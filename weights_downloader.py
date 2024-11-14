@@ -59,8 +59,6 @@ class WeightsDownloader:
             print(f"✅ {weight_str} exists in {dest}")
             return
         else:
-            # Fall back to pget if curl fails
-            print("Curl download failed, using pget...")
             WeightsDownloader.download(weight_str, url, dest)
 
 
@@ -82,7 +80,6 @@ class WeightsDownloader:
             ['curl', '-L', '-o', os.path.join(dest, os.path.basename(weight_str)), url],
             close_fds=False
         )
-        os.system(curl_command)
         elapsed_time = time.time() - start
         try:
             file_size_bytes = os.path.getsize(
