@@ -164,16 +164,13 @@ class Predictor(BasePredictor):
 async def predict(request: ImageRequest):
     """API endpoint for prediction."""
     try:
-        # Handle input file
-        input_file_path = "path/to/temp/file"  # You would need to handle the input properly (e.g., base64 decode)
         
         predictor = Predictor()
         predictor.setup()
 
         output_files = predictor.predict(
             workflow_json=request.workflow_json,
-            # input_file=Path(input_file_path),
-            input_file=None,
+            input_file=request.input_file,
             return_temp_files=request.return_temp_files,
             output_format=request.output_format,
             output_quality=request.output_quality,
