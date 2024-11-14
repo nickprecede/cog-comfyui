@@ -76,10 +76,14 @@ class WeightsDownloader:
         # )
         # curl_command = f"curl -L -o {os.path.join(dest, os.path.basename(weight_str))} {url}"
         # print(curl_command)
-        subprocess.check_call(
-            ['curl', '-L', '-o', os.path.join(dest, os.path.basename(weight_str)), url],
-            close_fds=False
-        )
+        try:
+            subprocess.check_call(
+                ['curl', '-L', '-o', os.path.join(dest, os.path.basename(weight_str)), url],
+                close_fds=False
+            )
+        except Exception as e:
+            print(e)
+            
         elapsed_time = time.time() - start
         try:
             file_size_bytes = os.path.getsize(
