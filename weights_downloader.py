@@ -80,6 +80,7 @@ class WeightsDownloader:
         print(f"⏳ Downloading {weight_str} to {dest}")
         start = time.time()
         print(' '.join(["pget", "--log-level", "warn", "-xf", url, dest]))
+        print(os.path.abspath(dest))
         subprocess.check_call(
             ["pget", "--log-level", "warn", "-xf", url, dest], close_fds=False
         )
