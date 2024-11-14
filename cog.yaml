@@ -104,8 +104,8 @@ build:
     - mkdir -p /root/.cache/torch/hub/checkpoints/
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/custom_nodes/comfyui_controlnet_aux/mobilenet_v2-b0353104.pth.tar /root/.cache/torch/hub/checkpoints/
     - ls -l /root/.cache/torch/hub/checkpoints/
-    - mkdir -p ComfyUI/models/checkpoints
-    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/checkpoints/SDXL-Flash.safetensors.tar ComfyUI/models/checkpoints
-    - ls -l ComfyUI/models/checkpoints
+    - mkdir -p /src/ComfyUI/models/checkpoints
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/checkpoints/SDXL-Flash.safetensors.tar /src/ComfyUI/models/checkpoints
+    - ls -l /src/ComfyUI/models/checkpoints
 predict: "predict.py:Predictor"
 train: "train.py:train"
