@@ -52,13 +52,26 @@ class WeightsDownloader:
             path_string = dest
         else:
             path_string = os.path.join(dest, weight_str)
+        print(f"Checking if file exists at: {path_string}")  # Debug print
+        print(os.path.exists(path_string))
         return os.path.exists(path_string)
 
     def download_if_not_exists(self, weight_str, url, dest):
         if self.check_if_file_exists(weight_str, dest):
             print(f"✅ {weight_str} exists in {dest}")
             return
-        WeightsDownloader.download(weight_str, url, dest)
+        # If file is missing, try to download with curl first
+        print(f"{weight_str} missing, attempting curl download first...")
+        curl_command = f"curl -L -o {os.path.join(dest, os.path.basename(weight_str))} {url}"
+        os.system(curl_command)
+        # Re-check if the file is now present
+        if self.check_if_file_exists(weight_str, dest):
+            print(f"✅ {weight_str} downloaded via curl to {dest}")
+        else:
+            # Fall back to pget if curl fails
+            print("Curl download failed, using pget...")
+            WeightsDownloader.download(weight_str, url, dest)
+
 
     @staticmethod
     def download(weight_str, url, dest):
