@@ -48,10 +48,11 @@ class WeightsDownloader:
             )
 
     def check_if_file_exists(self, weight_str, dest):
+        weight_filename = weight_str.split('/')[-1]
         if dest.endswith(weight_str):
             path_string = dest
         else:
-            path_string = os.path.join(dest, weight_str)
+            path_string = os.path.join(dest, weight_filename)
         return os.path.exists(path_string)
 
     def download_if_not_exists(self, weight_str, url, dest):
