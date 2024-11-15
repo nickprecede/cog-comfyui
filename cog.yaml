@@ -108,5 +108,13 @@ build:
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/checkpoints/SDXL-Flash.safetensors.tar /src/ComfyUI/models/checkpoints
     - ls -l /src/ComfyUI/models/checkpoints
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/unet/flux1-dev.safetensors.tar /src/ComfyUI/models/diffusion_models
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/facerestore_models/GFPGANv1.4.pth.tar /src/ComfyUI/models/facerestore_models
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/vae/ae.safetensors.tar /src/ComfyUI/models/vae
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/facedetection/parsing_parsenet.pth.tar /src/ComfyUI/models/facedetection
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/insightface/models/buffalo_l.tar /src/ComfyUI/models/insightface/models
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/facedetection/detection_Resnet50_Final.pth.tar /src/ComfyUI/models/facedetection
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/clip_l.safetensors.tar /src/ComfyUI/models/text_encoders
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/t5xxl_fp16.safetensors.tar /src/ComfyUI/models/text_encoders
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/insightface/inswapper_128.onnx.tar /src/ComfyUI/models/insightface
 predict: "predict.py:Predictor"
 train: "train.py:train"
