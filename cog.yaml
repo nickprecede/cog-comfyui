@@ -107,5 +107,6 @@ build:
     - mkdir -p /src/ComfyUI/models/checkpoints
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/checkpoints/SDXL-Flash.safetensors.tar /src/ComfyUI/models/checkpoints
     - ls -l /src/ComfyUI/models/checkpoints
+    - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/unet/flux1-dev.safetensors.tar /src/ComfyUI/models/diffusion_models
 predict: "predict.py:Predictor"
 train: "train.py:train"
