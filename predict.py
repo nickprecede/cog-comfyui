@@ -46,7 +46,9 @@ class Predictor(BasePredictor):
             self.handle_user_weights(weights)
 
         self.comfyUI = ComfyUI("127.0.0.1:8188")
-        self.comfyUI.start_server(OUTPUT_DIR, INPUT_DIR)
+
+        if not self.comfyUI.is_server_running():
+            self.comfyUI.start_server(OUTPUT_DIR, INPUT_DIR)
 
     def handle_user_weights(self, weights: str):
         print(f"Downloading user weights from: {weights}")
@@ -161,12 +163,12 @@ class Predictor(BasePredictor):
             output_format, output_quality, self.comfyUI.get_files(output_directories)
         )
 
-predictor = Predictor()
-predictor.setup(False)
 
 @app.post("/predict")
 async def predict(request: ImageRequest):
     """API endpoint for prediction."""
+    predictor = Predictor()
+    predictor.setup()
     try:
         output_files = predictor.predict(
             workflow_json=request.workflow_json,
@@ -186,6 +188,8 @@ async def predict(request: ImageRequest):
 @app.post("/pubsub/predict")
 async def pubsub_predict(request: Request):
     """Pub/Sub endpoint for asynchronous predictions."""
+    predictor = Predictor()
+    predictor.setup()
     try:
         # Decode Pub/Sub message
         envelope = await request.json()
