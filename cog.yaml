@@ -116,5 +116,6 @@ build:
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/clip_l.safetensors.tar /src/ComfyUI/models/text_encoders
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/t5xxl_fp16.safetensors.tar /src/ComfyUI/models/text_encoders
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/insightface/inswapper_128.onnx.tar /src/ComfyUI/models/insightface
+    - pip install "pydantic<2.0.0"
 predict: "predict.py:Predictor"
 train: "train.py:train"
