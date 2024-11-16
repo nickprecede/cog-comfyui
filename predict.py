@@ -162,7 +162,7 @@ class Predictor(BasePredictor):
         )
 
 predictor = Predictor()
-predictor.setup()
+predictor.setup(False)
 
 @app.post("/predict")
 async def predict(request: ImageRequest):
