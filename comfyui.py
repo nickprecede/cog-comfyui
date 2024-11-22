@@ -263,6 +263,9 @@ class ComfyUI:
         else:
             wf = workflow
 
+        if 'prompt' in wf:
+            wf_base = wf['prompt']
+
         # There are two types of ComfyUI JSON
         # We need the API version
         if any(key in wf.keys() for key in ["last_node_id", "last_link_id", "version"]):
@@ -272,7 +275,7 @@ class ComfyUI:
 
         self.handle_known_unsupported_nodes(wf)
         self.handle_inputs(wf)
-        self.handle_weights(wf)
+        self.handle_weights(wf_base)
         return wf
 
     def reset_execution_cache(self):
