@@ -116,6 +116,6 @@ build:
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/clip_l.safetensors.tar /src/ComfyUI/models/text_encoders
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/clip/t5xxl_fp16.safetensors.tar /src/ComfyUI/models/text_encoders
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/insightface/inswapper_128.onnx.tar /src/ComfyUI/models/insightface
-    - git clone --recursive https://github.com/Davemane42/ComfyUI_Dave_CustomNode /src/ComfyUI/custom_nodes/ComfyUI_Dave_CustomNode
+    # - git clone --recursive https://github.com/Davemane42/ComfyUI_Dave_CustomNode /src/ComfyUI/custom_nodes/ComfyUI_Dave_CustomNode
 predict: "predict.py:Predictor"
 train: "train.py:train"

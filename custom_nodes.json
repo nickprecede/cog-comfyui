@@ -200,5 +200,10 @@
   {
     "repo": "https://github.com/logtd/ComfyUI-Fluxtapoz",
     "commit": "e0b9195"
+  },
+  {
+    "repo": "https://github.com/Davemane42/ComfyUI_Dave_CustomNode",
+    "commit": "de6b112",
+    "notes": "MultiAreaConditioning"
   }
 ]
