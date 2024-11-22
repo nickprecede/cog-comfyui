@@ -144,10 +144,12 @@ class Predictor(BasePredictor):
         if input_file:
             self.handle_input_file(input_file)
 
-        if 'prompt' in workflow_json:
-            wf_base = deepcopy(workflow_json)['prompt']
-        else:
-            wf_base = deepcopy(workflow_json)
+        wf_base = deepcopy(workflow_json)
+        if not isinstance(wf_base, dict):
+            wf_base = json.loads(wf_base)
+
+        if 'prompt' in wf_base:
+            wf_base = wf_base['prompt']
 
         wf_base = self.comfyUI.load_workflow(wf_base or EXAMPLE_WORKFLOW_JSON)
 
