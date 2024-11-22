@@ -11,6 +11,7 @@ import random
 import requests
 import shutil
 import custom_node_helpers as helpers
+from copy import deepcopy
 from cog import Path
 from node import Node
 from weights_downloader import WeightsDownloader
@@ -186,7 +187,11 @@ class ComfyUI:
     def queue_prompt(self, prompt):
         try:
             # Prompt is the loaded workflow (prompt is the label comfyUI uses)
-            p = {"prompt": prompt, "client_id": self.client_id}
+            if 'prompt' in prompt:
+                p = deepcopy(prompt)
+                p['client_id'] = self.client_id
+            else:
+                p = {"prompt": prompt, "client_id": self.client_id}
             data = json.dumps(p).encode("utf-8")
             req = urllib.request.Request(
                 f"http://{self.server_address}/prompt?{self.client_id}", data=data
@@ -263,9 +268,6 @@ class ComfyUI:
         else:
             wf = workflow
 
-        if 'prompt' in wf:
-            wf_base = wf['prompt']
-
         # There are two types of ComfyUI JSON
         # We need the API version
         if any(key in wf.keys() for key in ["last_node_id", "last_link_id", "version"]):
@@ -275,7 +277,7 @@ class ComfyUI:
 
         self.handle_known_unsupported_nodes(wf)
         self.handle_inputs(wf)
-        self.handle_weights(wf_base)
+        self.handle_weights(wf)
         return wf
 
     def reset_execution_cache(self):

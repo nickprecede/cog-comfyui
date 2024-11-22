@@ -10,6 +10,7 @@ import zipfile
 import mimetypes
 from PIL import Image
 from typing import List
+from copy import deepcopy
 from cog import BasePredictor, Input, Path
 from comfyui import ComfyUI
 from weights_downloader import WeightsDownloader
@@ -143,7 +144,12 @@ class Predictor(BasePredictor):
         if input_file:
             self.handle_input_file(input_file)
 
-        wf = self.comfyUI.load_workflow(workflow_json or EXAMPLE_WORKFLOW_JSON)
+        if 'prompt' in workflow_json:
+            wf_base = deepcopy(workflow_json)['prompt']
+        else:
+            wf_base = deepcopy(workflow_json)
+
+        wf_base = self.comfyUI.load_workflow(wf_base or EXAMPLE_WORKFLOW_JSON)
 
         self.comfyUI.connect()
 
@@ -151,9 +157,9 @@ class Predictor(BasePredictor):
             self.comfyUI.reset_execution_cache()
 
         if randomise_seeds:
-            self.comfyUI.randomise_seeds(wf)
+            self.comfyUI.randomise_seeds(wf_base)
 
-        self.comfyUI.run_workflow(wf)
+        self.comfyUI.run_workflow(workflow_json)
 
         output_directories = [OUTPUT_DIR]
         if return_temp_files:
