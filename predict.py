@@ -145,7 +145,7 @@ class Predictor(BasePredictor):
             self.handle_input_file(input_file)
 
         wf = workflow_json
-        if not isinstance(wf_base, dict):
+        if not isinstance(wf, dict):
             wf = json.loads(wf)
             wf_base = wf
 
