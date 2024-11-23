@@ -144,10 +144,10 @@ class Predictor(BasePredictor):
         if input_file:
             self.handle_input_file(input_file)
 
-        wf_base = deepcopy(workflow_json)
+        wf = workflow_json
         if not isinstance(wf_base, dict):
-            wf_base = json.loads(wf_base)
-            wf = json.loads(workflow_json)
+            wf = json.loads(wf)
+            wf_base = wf
 
         if 'prompt' in wf_base:
             wf_base = wf_base['prompt']
