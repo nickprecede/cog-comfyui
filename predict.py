@@ -147,6 +147,7 @@ class Predictor(BasePredictor):
         wf_base = deepcopy(workflow_json)
         if not isinstance(wf_base, dict):
             wf_base = json.loads(wf_base)
+            wf = json.loads(workflow_json)
 
         if 'prompt' in wf_base:
             wf_base = wf_base['prompt']
@@ -161,7 +162,7 @@ class Predictor(BasePredictor):
         if randomise_seeds:
             self.comfyUI.randomise_seeds(wf_base)
 
-        self.comfyUI.run_workflow(wf_base)
+        self.comfyUI.run_workflow(wf)
 
         output_directories = [OUTPUT_DIR]
         if return_temp_files:
