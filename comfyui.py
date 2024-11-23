@@ -137,7 +137,7 @@ class ComfyUI:
                         if input_value.startswith(("http://", "https://")):
                             filename = os.path.join(
                                 self.input_directory, os.path.basename(input_value)
-                            )
+                            ).split('?')[0]
                             if not os.path.exists(filename):
                                 print(f"Downloading {input_value} to {filename}")
                                 try:
@@ -232,9 +232,11 @@ class ComfyUI:
             out = self.ws.recv()
             if isinstance(out, str):
                 message = json.loads(out)
+                print(message)
 
                 if message["type"] == "execution_error":
                     error_data = message["data"]
+                    print(error_data)
 
                     if (
                         "exception_type" in error_data
