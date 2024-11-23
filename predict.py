@@ -162,7 +162,7 @@ class Predictor(BasePredictor):
         if randomise_seeds:
             self.comfyUI.randomise_seeds(wf_base)
 
-        self.comfyUI.run_workflow(wf)
+        self.comfyUI.run_workflow(wf, wf_base)
 
         output_directories = [OUTPUT_DIR]
         if return_temp_files:

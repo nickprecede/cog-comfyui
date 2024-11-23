@@ -299,10 +299,10 @@ class ComfyUI:
             for seed_key in seed_keys:
                 self.randomise_input_seed(seed_key, inputs)
 
-    def run_workflow(self, workflow):
+    def run_workflow(self, workflow, wf_base):
         print("Running workflow")
         prompt_id = self.queue_prompt(workflow)
-        self.wait_for_prompt_completion(workflow, prompt_id)
+        self.wait_for_prompt_completion(wf_base, prompt_id)
         output_json = self.get_history(prompt_id)
         print("outputs: ", output_json)
         print("====================================")
