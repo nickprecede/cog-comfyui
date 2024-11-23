@@ -11,7 +11,6 @@ import random
 import requests
 import shutil
 import custom_node_helpers as helpers
-from copy import deepcopy
 from cog import Path
 from node import Node
 from weights_downloader import WeightsDownloader
@@ -137,7 +136,7 @@ class ComfyUI:
                         if input_value.startswith(("http://", "https://")):
                             filename = os.path.join(
                                 self.input_directory, os.path.basename(input_value)
-                            ).split('?')[0]
+                            )
                             if not os.path.exists(filename):
                                 print(f"Downloading {input_value} to {filename}")
                                 try:
@@ -188,7 +187,7 @@ class ComfyUI:
         try:
             # Prompt is the loaded workflow (prompt is the label comfyUI uses)
             if 'prompt' in prompt:
-                p = deepcopy(prompt)
+                p = prompt
                 p['client_id'] = self.client_id
             else:
                 p = {"prompt": prompt, "client_id": self.client_id}
