@@ -119,6 +119,6 @@ build:
     # - git clone --recursive https://github.com/Davemane42/ComfyUI_Dave_CustomNode /src/ComfyUI/custom_nodes/ComfyUI_Dave_CustomNode
     - pget --log-level warn -xf https://weights.replicate.delivery/default/comfy-ui/insightface/models/buffalo_l.tar /src/ComfyUI/models/insightface/models
     - rm -rf /src/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale
-    - git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive /src/ComfyUI/custom_nodes/
+    - git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive /src/ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale/
 predict: "predict.py:Predictor"
 train: "train.py:train"
